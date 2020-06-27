@@ -1,0 +1,53 @@
+<div class="row pt-1 mb-2">
+  <div class="col-md-4 text-center mb-2">
+    <div class="input-group input-group-sm">
+      <input [(ngModel)]="nomeNumeroPokemon" type="text" class="form-control">
+      <span class="input-group-append">
+        <button (click)="buscarPokemon()" type="button" class="btn btn-info btn-flat"><i class="fa fa-search"
+            aria-hidden="true"></i></button>
+      </span>
+    </div>
+  </div>
+  <div class="col-md-8 text-center">
+    <h5 class="card-title">Digite o nome ou número do pokemon desejado para se aprofundar sobre suas caracteristicas,
+      habilidades e muito mais!</h5>
+  </div>
+</div>
+<hr>
+<div class="row pt-2">
+  <div _ngcontent-ohl-c48="" class="col-12">
+    <div class="alert alert-danger alert-dismissible {{error}}">      
+      <h5><i class="icon fas fa-ban"></i> Pokemon Erro!</h5>
+      {{msgError}}
+    </div>
+  </div>
+  <div *ngFor="let item of items; let i = index" class="col-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-2">
+    <div class="card bg-light mb-3">
+      <a [routerLink]="['/detail', item.id]">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-12 col-xl-10">
+              <h5 class="card-title title-pokemon">{{ item.nome }}</h5>
+              <span>Nº{{ item.numero }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body image-pokemon">
+          <img width="50%" alt="Pokemon Logo" src="{{ item.image }}" />
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="btn-footer {{hide}}">
+    <div class="row row-footer">
+      <div class="offset-lg-2 col-4">
+        <button (click)="prevPage();" type="button" class="btn btn-block btn-default"><i
+            class="fas fa-arrow-left"></i></button>
+      </div>
+      <div class="col-4">
+        <button (click)="nextPage();" type="button" class="btn btn-block btn-outline-info"><i
+            class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>

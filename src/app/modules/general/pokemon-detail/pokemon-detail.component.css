@@ -1,0 +1,110 @@
+.abilities{
+    margin-right: 5px;
+}
+
+.grass{
+    margin-right: 5px;
+    background-color: #78C850!important;
+}
+
+.poison{
+    margin-right: 5px;
+    background-color: #A040A0!important;
+}
+
+.fire{
+    margin-right: 5px;
+    background-color: #F08030!important;
+}
+
+.detail{
+    margin-top: 10%;
+    margin-left: -15px;
+}
+
+.normal{
+    margin-right: 5px;
+    background-color: #A8A878!important;
+}
+
+.water{
+    margin-right: 5px;
+    background-color: #6890F0!important;
+}
+
+.electric{
+    margin-right: 5px;
+    background-color: #F8D030!important;
+}
+
+.ice{
+    margin-right: 5px;
+    background-color: #98D8D8!important;
+}
+
+.fighting{
+    margin-right: 5px;
+    background-color: #C03028!important;
+}
+
+.ground{
+    margin-right: 5px;
+    background-color: #E0C068!important;
+}
+
+.flying{
+    margin-right: 5px;
+    background-color: #A890F0!important;
+}
+
+.psychic{
+    margin-right: 5px;
+    background-color: #F85888!important;
+}
+
+.bug{
+    margin-right: 5px;
+    background-color: #A8B820!important;
+}
+
+.rock{
+    margin-right: 5px;
+    background-color: #B8A038!important;
+}
+
+.ghost{
+    margin-right: 5px;
+    background-color: #705898!important;
+}
+
+.dark{
+    margin-right: 5px;
+    background-color: #705848!important;
+}
+
+.dragon{
+    margin-right: 5px;
+    background-color: #7038F8!important;
+}
+
+.steel{
+    margin-right: 5px;
+    background-color: #B8B8D0!important;
+}
+
+.fairy{
+    margin-right: 5px;
+    background-color: #F0B6BC!important;
+}
+
+.card-detail{
+    max-width: 40%;
+}
+
+.bg-white{
+    background: white;
+    border-radius: 10px;
+}
+
+
+
