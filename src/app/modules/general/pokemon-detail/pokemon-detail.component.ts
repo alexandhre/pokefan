@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 export class PokemonDetailComponent implements OnInit {
 
   public numeroPokemon: any;
+  public loading: any;
+  public content: any;
   public result: any;
   public public_image: any;
   public mainType: any;
@@ -23,12 +25,14 @@ export class PokemonDetailComponent implements OnInit {
     this.public_image = '../../../../assets/images/default.jpg';
     this.tipos = JSON.parse(sessionStorage.getItem('tipos'));
     this.msgError = "";
+    this.content = "hide-error";
     this.error = "hide-error";
+    this.loading = "hide-error";
   }
 
   ngOnInit(): void {
     this.numeroPokemon = sessionStorage.getItem('idPokemon');
-    this.getPokemon(this.numeroPokemon);             
+    this.getPokemon();             
   }
 
   titleize(text) {
@@ -40,8 +44,9 @@ export class PokemonDetailComponent implements OnInit {
     return words.join(" ");
   }
 
-  public async getPokemon(nomePokemon): Promise<void> {
+  public async getPokemon(): Promise<void> {
     this.result = '';
+    this.loading = "show-error";
     try {
       this.result = await this.globalService.buscarPokemon<any>({
         url: `${environment.application}pokemon/` + this.numeroPokemon
@@ -62,12 +67,14 @@ export class PokemonDetailComponent implements OnInit {
             this.public_image = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/" + this.result.numero + ".png";
           }
           this.result.nome = this.titleize(this.result.forms[0].name);        
-          fraquezas = this.tipos.filter(x => x.nome == this.result.types[0].type.name);
-          console.log(fraquezas);
+          fraquezas = this.tipos.filter(x => x.nome == this.result.types[0].type.name);          
           this.mainType = this.result.types[0].type.name;
           this.result.fraquezas = fraquezas[0]['desvantagem'];
+          this.loading = "hide-error";
+          this.content = "show-error";
           this.items.push(this.result);
     } catch (error) {
+      this.loading = "hide-error";
       this.error = "show-error";
       this.msgError = "Não foi encontrado nenhum Pokemon com esse número ou nome fornecido!";
     }

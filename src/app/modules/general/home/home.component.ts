@@ -9,6 +9,11 @@ import { environment } from 'src/environments/environment';
 export class HomeComponent implements OnInit {
 
   public nomeNumeroPokemon: any;
+  public loadingNext: any;
+  public loadingPrev: any;
+  public iconNext: any;
+  public iconPrev: any;
+  public disabled: any;
   public result: any;
   public hide: any;
   public error: any;
@@ -23,12 +28,17 @@ export class HomeComponent implements OnInit {
   ) {
     this.hide = "";
     this.msgError = "";
-    this.error = "hide-error";
+    this.error = "hide";
+    this.loadingNext = "hide";
+    this.loadingPrev = "hide";
+    this.iconNext = "show-error";
+    this.iconPrev = "show-error";
     this.nomeNumeroPokemon = "";
+    this.disabled = "disabled";
   }
 
   ngOnInit() {
-    this.error = "hide-error";
+    this.error = "hide";
     this.hide = 'hide';
     this.refreshPage();
   }
@@ -36,7 +46,7 @@ export class HomeComponent implements OnInit {
   public async buscarPokemon(): Promise<void> {
     this.result = '';
     this.hide = 'hide';
-    this.error = "hide-error";
+    this.error = "hide";
     this.items = [];
     if (this.nomeNumeroPokemon != "" || this.nomeNumeroPokemon != '') {
       try {
@@ -80,7 +90,10 @@ export class HomeComponent implements OnInit {
 
   public async nextPage(): Promise<void> {
     this.result = '';
-    this.error = "hide-error";
+    this.error = "hide";
+    this.iconNext = "hide";
+    this.loadingNext = "show-error";
+    this.disabled = "";
     if (this.nextLink != null) {
       try {
         this.result = await this.globalService.buscarPokemon<any>({
@@ -108,6 +121,8 @@ export class HomeComponent implements OnInit {
           } else {
             this.result.results[i].image = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/" + this.result.results[i].numero + ".png";
           }
+          this.loadingNext = "hide";
+          this.iconNext = "show-error";
           this.items.push(this.result.results[i]);
         }
       } catch (error) {
@@ -115,20 +130,27 @@ export class HomeComponent implements OnInit {
       }
     } else {
       this.error = "show-error";
+      this.loadingNext = "hide";
+      this.iconNext = "show-error";
       this.msgError = "Sem mais resultados a serem exibidos!";
     }
   }
 
   public async prevPage(): Promise<void> {
     this.result = '';
-    this.error = "hide-error";
+    this.error = "hide";
+    this.iconPrev = "hide";
+    this.loadingPrev = "show-error";     
     if (this.prevLink != null) {
       try {
         this.result = await this.globalService.buscarPokemon<any>({
           url: this.prevLink
         });
         this.items = [];
-        this.prevLink = this.result.previous
+        this.prevLink = this.result.previous;
+        if(this.prevLink == null){
+          this.disabled = "disabled";
+        }
         this.nextLink = this.result.next;
         for (var i = 0; i < this.result.results.length; i++) {
           let url = '';
@@ -145,14 +167,16 @@ export class HomeComponent implements OnInit {
             this.result.results[i].numero = this.result.results[i].id;
           }
           this.result.results[i].image = "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/" + this.result.results[i].numero + ".png";
+          this.loadingPrev = "hide";
+          this.iconPrev = "show-error";          
           this.items.push(this.result.results[i]);
         }
       } catch (error) {
         this.refreshPage;
       }
-    } else {
-      this.error = "show-error";
-      this.msgError = "Sem mais resultados a serem exibidos!";
+    } else {      
+      this.loadingPrev = "hide";
+      this.iconPrev = "show-error";
     }
   }
 

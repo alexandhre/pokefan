@@ -41,12 +41,15 @@
     <div class="btn-footer {{hide}}">
       <div class="row row-footer">
         <div class="offset-lg-2 col-4">
-          <button (click)="prevPage();" type="button" class="btn btn-block btn-default"><i
-              class="fas fa-arrow-left"></i></button>
+          <button (click)="prevPage();" type="button" class="btn btn-block btn-info bg-loading {{disabled}}">
+            <span class="spinner-border spinner-border-sm bg-loading {{loadingPrev}}" role="status" aria-hidden="true"></span>  
+            <i class="fas fa-arrow-left {{iconPrev}}"></i></button>
         </div>
         <div class="col-4">
-          <button (click)="nextPage();" type="button" class="btn btn-block btn-outline-info"><i
-              class="fas fa-arrow-right"></i></button>
+          <button (click)="nextPage();" type="button" class="btn btn-block btn-info bg-loading">
+            <span class="spinner-border spinner-border-sm bg-loading {{loadingNext}}" role="status" aria-hidden="true"></span>  
+            <i class="fas fa-arrow-right {{iconNext}}"></i>
+          </button>
         </div>
       </div>
     </div>

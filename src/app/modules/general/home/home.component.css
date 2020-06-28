@@ -18,12 +18,8 @@
     display: none!important;
   }
 
-  .hide-error{
-    display: none!important;
-  }
-
   .show-error{
-    display: block!important;
+    display: inline-block!important;
   }
 
   .row-footer{
@@ -49,4 +45,9 @@
 
   .image-pokemon{      
     text-align: center;
+  }
+
+  .bg-loading{
+    background: #17a2b8!important;
+    color: white!important;
   }
