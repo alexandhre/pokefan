@@ -20,6 +20,7 @@ projeto será iniciado no caminho [http://localhost:4200](http://localhost:4200)
 
 ### Requisitos
 O que você precisa para executar este aplicativo:
+* Node Js versão 12.16.1
 * Angular versão 9.1.9
 * Angular CLI versão 9.1.7
 * Typescript versão 3.8.3
