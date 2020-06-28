@@ -97,14 +97,18 @@
     background-color: #F0B6BC!important;
 }
 
-.card-detail{
-    max-width: 40%;
-}
-
 .bg-white{
     background: white;
     border-radius: 10px;
 }
 
+  .bg-gray{
+      color: gray!important;;
+  }
+  .hide-error{
+    display: none!important;
+  }
 
-
+  .show-error{
+    display: block!important;
+  }

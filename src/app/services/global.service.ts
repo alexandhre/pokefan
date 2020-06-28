@@ -1,111 +1,88 @@
-import { Injectable } from '@angular/core';
-import {HttpErrorResponse, HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { environment } from './../../environments/environment';
+import axios from "axios";
+import { AxiosInstance } from "axios";
+import { ErrorHandler } from "@angular/core";
+import { Injectable } from "@angular/core";
+import { environment } from '../../environments/environment';
+
+export interface Params {
+	[ key: string ]: any;
+}
+ 
+export interface GetOptions {
+	url: string;
+	params?: Params;
+}
+ 
+export interface ErrorResponse {
+	id: string;
+	code: string;
+	message: string;
+}
+ 
 
 @Injectable({
     providedIn: 'root'
 })
 export class GlobalService {
 
-    private loading: any;
-    private usuario: any;
+    private loading: any;  
+    private axiosClient: AxiosInstance;
+	private errorHandler: ErrorHandler;  
 
-    constructor(
-        private http: HttpClient
-    ) { }
-
-    public tipoEntidade(tipo: string) {
-        var nome: string = "";
-        switch (tipo) {
-            case 'todos':
-                nome = "Todos";
-                break;
-            case 'imoveis':
-                nome = "Imóveis";
-                break;
-            case 'empresas':
-                nome = "Empresas";
-                break;
-            case 'contribuinte':
-                nome = "Contribuinte";
-                break;
-        }
-
-        return nome;
+    // I initialize the ApiClient.
+	constructor( errorHandler: ErrorHandler ) {
+ 
+		this.errorHandler = errorHandler;
+ 
+		// The ApiClient wraps calls to the underlying Axios client.
+		this.axiosClient = axios.create({
+			timeout: 3000,
+			headers: {
+				"X-Initialized-At": Date.now().toString()
+			}
+		});
+ 
     }
-
-    public tipoEntidadeServiço(tipo: string) {
-        var nome: string = "";
-        switch (tipo) {
-            case 'IMOVEL':
-                nome = "imoveis";
-                break;
-            case 'EMPRESA':
-                nome = "empresas";
-                break;
-            case 'CONTRIBUINTE':
-                nome = "contribuinte";
-                break;
-        }
-
-        return nome;
+    
+    // I perform a GET request with the given options.
+	public async buscarPokemon<T>( options: GetOptions  ) : Promise<T> {
+ 
+		try {
+ 
+			var axiosResponse = await this.axiosClient.request<any>({
+				method: "get",
+				url: options.url
+			});
+ 
+			return( axiosResponse.data );
+ 
+		} catch ( error ) {
+ 
+			return( Promise.reject( this.normalizeError( error ) ) );
+ 
+		}
+ 
     }
+    private normalizeError( error: any ) : ErrorResponse {
+ 
+		this.errorHandler.handleError( error );
+ 
+		// NOTE: Since I'm not really dealing with a production API, this doesn't really
+		// normalize anything (ie, this is not the focus of this demo).
+		return({
+			id: "-1",
+			code: "UnknownError",
+			message: "An unexpected error occurred."
+		});
+ 
+	}      
 
-    public desEntidade(tipo: string) {
-        var nome: string = "";
-        switch (tipo) {
-            case 'todos':
-                nome = "Todos";
-                break;
-            case 'imovel':
-                nome = "do Imóvel";
-                break;
-            case 'empresa':
-                nome = "da Empresa";
-                break;
-            case 'contribuinte':
-                nome = "do Contribuinte";
-                break;
-        }
+    // listarPokemons(): Observable<any> {                                
+    //     return this.http.get();
+    // }
 
-        return nome;
-    }
-
-    public getIconEntidade(tipo: string) {
-        var nome: string = "";
-        switch (tipo) {
-            case 'todos':
-                nome = "M2.89325 8.88889L6.48311 1.77778H34.259L38.0378 8.88889H37.4348H35.6522H5.34783H3.56522H2.89325ZM3.56522 10.6667H1.99578H0L0.897465 8.88889L5.38479 0H35.3318L40.0553 8.88889L41 10.6667H38.9825H37.4348V30.2222V32H35.6522H19.6087H17.8261H12.4783H10.6957H5.34783H3.56522V30.2222V10.6667ZM35.6522 30.2222H19.6087V19.5556V17.7778H17.8261H12.4783H10.6957V19.5556V30.2222H5.34783V10.6667H35.6522V30.2222ZM17.8261 30.2222H12.4783V19.5556H17.8261V30.2222ZM24.9565 17.7778H30.3043V23.1111H24.9565V17.7778ZM23.1739 16H24.9565H30.3043H32.087V17.7778V23.1111V24.8889H30.3043H24.9565H23.1739V23.1111V17.7778V16Z";
-                break;
-            case 'imoveis':
-                nome = "M2.89325 8.88889L6.48311 1.77778H34.259L38.0378 8.88889H37.4348H35.6522H5.34783H3.56522H2.89325ZM3.56522 10.6667H1.99578H0L0.897465 8.88889L5.38479 0H35.3318L40.0553 8.88889L41 10.6667H38.9825H37.4348V30.2222V32H35.6522H19.6087H17.8261H12.4783H10.6957H5.34783H3.56522V30.2222V10.6667ZM35.6522 30.2222H19.6087V19.5556V17.7778H17.8261H12.4783H10.6957V19.5556V30.2222H5.34783V10.6667H35.6522V30.2222ZM17.8261 30.2222H12.4783V19.5556H17.8261V30.2222ZM24.9565 17.7778H30.3043V23.1111H24.9565V17.7778ZM23.1739 16H24.9565H30.3043H32.087V17.7778V23.1111V24.8889H30.3043H24.9565H23.1739V23.1111V17.7778V16Z";
-                break;
-            case 'empresas':
-                nome = "M14.3158 1.77778H19.6842V3.55556H14.3158V1.77778ZM12.5263 3.55556V1.77778V0H14.3158H19.6842H21.4737V1.77778V3.55556H32.2105H34V5.33333V16V17.7778V30.2222V32H32.2105H1.78947H0V30.2222V17.7778V16V5.33333V3.55556H1.78947H12.5263ZM1.78947 17.7778V30.2222H32.2105V17.7778H21.4737V19.5556V21.3333H19.6842H14.3158H12.5263V19.5556V17.7778H1.78947ZM12.5263 16H1.78947V5.33333H12.5263H14.3158H19.6842H21.4737H32.2105V16H21.4737H19.6842H14.3158H12.5263ZM14.3158 17.7778V19.5556H19.6842V17.7778H14.3158Z";
-                break;
-            case 'contribuinte':
-                nome = "M16.1337 0H15.564L15.4152 0.546975L13.3922 7.9813H8.89927V0.301945H7.41065V7.9813H1.71903H0.714938L1.00688 8.93706L2.72599 14.5651C1.07915 15.6964 0 17.5873 0 19.729C0 23.1924 2.8222 26 6.30355 26C9.78491 26 12.6071 23.1924 12.6071 19.729C12.6071 19.55 12.5996 19.3728 12.5848 19.1977H16.8833C17.9309 23.1143 21.5203 26 25.7871 26C30.8753 26 35 21.8965 35 16.8346C35 13.3731 33.0711 10.3597 30.2243 8.80037L28.4996 0.589014L28.3758 0H27.771H16.1337ZM28.9148 9.80624L28.9263 9.86115L29.0021 9.8454C31.6631 11.0588 33.5114 13.732 33.5114 16.8346C33.5114 21.0786 30.0531 24.519 25.7871 24.519C21.5211 24.519 18.0628 21.0786 18.0628 16.8346C18.0628 13.3459 20.3998 10.4002 23.6012 9.46223H23.7004V9.43389C24.3642 9.24905 25.064 9.15021 25.7871 9.15021C26.9004 9.15021 27.9586 9.38451 28.9148 9.80624ZM28.5543 8.08989L27.1661 1.48094H23.7545V7.89309C24.4084 7.74659 25.0887 7.66927 25.7871 7.66927C26.7513 7.66927 27.6808 7.81661 28.5543 8.08989ZM22.2659 7.9813V1.48094H16.7033L14.9344 7.9813H22.2659ZM20.3126 9.46223C18.0446 11.1318 16.5742 13.8124 16.5742 16.8346C16.5742 17.1322 16.5885 17.4264 16.6164 17.7167H12.2756C11.4328 15.2404 9.0774 13.458 6.30355 13.458C5.51619 13.458 4.76255 13.6016 4.06764 13.8639L2.72313 9.46223H20.3126ZM25.7873 20.3091C27.7161 20.3091 29.2798 18.7535 29.2798 16.8346C29.2798 14.9157 27.7161 13.3602 25.7873 13.3602C23.8584 13.3602 22.2947 14.9157 22.2947 16.8346C22.2947 18.7535 23.8584 20.3091 25.7873 20.3091ZM25.7873 21.7901C28.5383 21.7901 30.7684 19.5714 30.7684 16.8346C30.7684 14.0978 28.5383 11.8792 25.7873 11.8792C23.0363 11.8792 20.8061 14.0978 20.8061 16.8346C20.8061 19.5714 23.0363 21.7901 25.7873 21.7901ZM11.1185 19.729C11.1185 22.3745 8.96277 24.5191 6.30355 24.5191C3.64434 24.5191 1.48862 22.3745 1.48862 19.729C1.48862 17.0835 3.64434 14.9389 6.30355 14.9389C8.96277 14.9389 11.1185 17.0835 11.1185 19.729ZM6.30349 21.6247C7.35593 21.6247 8.2091 20.776 8.2091 19.729C8.2091 18.682 7.35593 17.8332 6.30349 17.8332C5.25106 17.8332 4.39789 18.682 4.39789 19.729C4.39789 20.776 5.25106 21.6247 6.30349 21.6247ZM6.30349 23.1057C8.17807 23.1057 9.69771 21.5939 9.69771 19.729C9.69771 17.8641 8.17807 16.3523 6.30349 16.3523C4.42892 16.3523 2.90927 17.8641 2.90927 19.729C2.90927 21.5939 4.42892 23.1057 6.30349 23.1057Z";
-                break;
-        }
-
-        return nome;
-    }
-   
-    public async dismissLoading() {
-        await this.loading.dismiss();
-    }   
-   
-    buscarPokemon(nomeNumeroPokemon): Observable<any> {                         
-        return this.http.get(`${environment.application}pokemon/`+nomeNumeroPokemon);
-    }
-
-    listarPokemons(): Observable<any> {                                
-        return this.http.get(`${environment.application}pokemon?limit=12&offset=0`);
-    }
-
-    carregarMais(link): Observable<any> {                                
-        return this.http.get(link);
-    }
+    // carregarMais(link): Observable<any> {                                
+    //     return this.http.get(link);
+    // }
     
 }

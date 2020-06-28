@@ -6,6 +6,7 @@ import { Component, OnInit  } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
+  title: String = "Pokefan";
   public numeroPokemon: any;
   public public_image: any;
   public items: any = [

@@ -23,11 +23,14 @@ O que você precisa para executar este aplicativo:
 * Angular versão 9.1.9
 * Angular CLI versão 9.1.7
 * Typescript versão 3.8.3
-* Jquery versão 3.5.1
 * Bootstrap versão 4.5.0
 * Fontawesome versão 5.13.0
+* KarmaJs versão 5.0.9
 
 ## Getting Started
+
+### Demo
+* Url do Projeto: http://pokefan.outofthebyte.com/
 
 ### Instalação
 * `npm install` (instalar dependências)
@@ -36,9 +39,7 @@ O que você precisa para executar este aplicativo:
 * `npm run build`
 
 ### Testes
-* `npm run lint`
 * `npm run test`
-* `npm run e2e`
 
 ### Autor
 * Criado em  : 27/06/2020
